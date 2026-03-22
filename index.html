@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>VibeMatch — Find Your Next Obsession</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header class="hero">
+    <div class="hero-bg"></div>
+    <nav class="nav">
+      <div class="nav-logo">Vibe<span>Match</span></div>
+      <div class="nav-tagline">Discover movies made for you</div>
+    </nav>
+    <div class="hero-content">
+      <p class="hero-eyebrow">AI-powered taste engine</p>
+      <h1 class="hero-title">Your next favourite <em>film</em> is waiting</h1>
+      <p class="hero-sub">Tell us what you've watched. We'll read your soul and find what's next.</p>
+      <button class="btn-hero" onclick="scrollToApp()">Start Matching →</button>
+    </div>
+    <div class="hero-scroll-hint">scroll down</div>
+  </header>
+
+  <main class="app-wrap" id="appSection">
+
+    <div class="steps-bar">
+      <div class="step-item active" id="si1">
+        <div class="step-num">01</div>
+        <div class="step-name">Pick Movies</div>
+      </div>
+      <div class="step-connector" id="sc1"></div>
+      <div class="step-item" id="si2">
+        <div class="step-num">02</div>
+        <div class="step-name">Rate Songs</div>
+      </div>
+      <div class="step-connector" id="sc2"></div>
+      <div class="step-item" id="si3">
+        <div class="step-num">03</div>
+        <div class="step-name">Discover</div>
+      </div>
+    </div>
+
+    <!-- STEP 1 -->
+    <section class="step-section active" id="step1">
+      <div class="section-header">
+        <h2>Movies you've <em>already</em> seen</h2>
+        <p>Pick at least 5 — the more you select, the smarter the recommendations get</p>
+      </div>
+      <div class="cinema-tabs">
+        <button class="cinema-tab active" onclick="switchCinema('hollywood', this)">🎬 Hollywood</button>
+        <button class="cinema-tab" onclick="switchCinema('bollywood', this)">🎭 Bollywood</button>
+      </div>
+      <div class="filter-strip" id="genreStrip"></div>
+      <div class="search-wrap">
+        <span class="search-icon">⌕</span>
+        <input class="search-input" type="text" placeholder="Search movies…" oninput="handleSearch(this.value)">
+      </div>
+      <div class="movie-grid" id="movieGrid">
+        <div class="grid-loading">Loading movies…</div>
+      </div>
+      <div class="step-footer">
+        <div class="selected-count"><span id="movieCount">0</span> selected</div>
+        <button class="btn-next" id="step1Btn" disabled onclick="goStep2()">Continue to Songs →</button>
+      </div>
+    </section>
+
+    <!-- STEP 2 -->
+    <section class="step-section" id="step2">
+      <div class="section-header">
+        <h2>Songs that <em>match</em> your vibe</h2>
+        <p>Heart the ones you love — help us understand your mood</p>
+      </div>
+      <div class="filter-strip" id="moodStrip">
+        <button class="filter-chip active" onclick="filterMood('all',this)">All Moods</button>
+        <button class="filter-chip" onclick="filterMood('hype',this)">🔥 Hype</button>
+        <button class="filter-chip" onclick="filterMood('chill',this)">🌊 Chill</button>
+        <button class="filter-chip" onclick="filterMood('emotional',this)">💧 Emotional</button>
+        <button class="filter-chip" onclick="filterMood('dark',this)">🌑 Dark</button>
+        <button class="filter-chip" onclick="filterMood('happy',this)">☀️ Happy</button>
+      </div>
+      <div class="song-list" id="songList"></div>
+      <div class="step-footer">
+        <button class="btn-back" onclick="goStep1()">← Back</button>
+        <div class="selected-count"><span id="songCount">0</span> liked</div>
+        <button class="btn-next" id="step2Btn" disabled onclick="goStep3()">Get My Recommendations →</button>
+      </div>
+    </section>
+
+    <!-- STEP 3 -->
+    <section class="step-section" id="step3">
+      <div class="section-header">
+        <h2>Your personal <em>picks</em></h2>
+        <p>Handpicked by AI — based on everything you told us</p>
+      </div>
+      <div id="resultsArea"></div>
+      <div class="step-footer" style="justify-content:center; gap:16px; margin-top:40px;">
+        <button class="btn-back" onclick="goStep2()">← Tweak Songs</button>
+        <button class="btn-next" onclick="resetAll()">Start Over ↺</button>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <p>Powered by AI · Movie data via IMDB</p>
+    <p class="footer-credit">
+      Made with ❤️ by
+      <a href="https://www.linkedin.com/in/priit03" target="_blank" class="footer-link">Pritam</a>
+    </p>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
