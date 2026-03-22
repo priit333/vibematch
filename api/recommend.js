@@ -17,30 +17,32 @@ export default async function handler(req, res) {
           generationConfig: {
             temperature: 0.7,
             maxOutputTokens: 2000,
-            responseMimeType: "application/json"
           },
         }),
       }
     );
 
     const data = await response.json();
-    let text = data.candidates?.[0]?.content?.parts?.[0]?.text || "{}";
+    
+    // Log full response for debugging
+    console.log("GEMINI RESPONSE:", JSON.stringify(data));
+    
+    let text = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
+    console.log("RAW TEXT:", text);
 
-    // Clean everything
     text = text.replace(/```json/gi, "").replace(/```/g, "").trim();
     const start = text.indexOf("{");
     const end = text.lastIndexOf("}");
     if (start !== -1 && end !== -1) text = text.slice(start, end + 1);
 
-    // Validate JSON
-    JSON.parse(text);
+    console.log("CLEANED TEXT:", text);
 
     return res.status(200).json({
       content: [{ type: "text", text }],
     });
+
   } catch (err) {
-    return res.status(200).json({
-      content: [{ type: "text", text: '{"hollywood":[],"bollywood":[]}' }],
-    });
+    console.log("ERROR:", err.message);
+    return res.status(500).json({ error: err.message });
   }
 }
