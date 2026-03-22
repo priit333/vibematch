@@ -17,28 +17,30 @@ export default async function handler(req, res) {
           generationConfig: {
             temperature: 0.7,
             maxOutputTokens: 2000,
+            responseMimeType: "application/json"
           },
         }),
       }
     );
 
     const data = await response.json();
-    let text = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
+    let text = data.candidates?.[0]?.content?.parts?.[0]?.text || "{}";
 
-    // Strip markdown backticks Gemini sometimes adds
+    // Clean everything
     text = text.replace(/```json/gi, "").replace(/```/g, "").trim();
+    const start = text.indexOf("{");
+    const end = text.lastIndexOf("}");
+    if (start !== -1 && end !== -1) text = text.slice(start, end + 1);
 
-    // Extract only the JSON object
-    const jsonStart = text.indexOf("{");
-    const jsonEnd = text.lastIndexOf("}");
-    if (jsonStart !== -1 && jsonEnd !== -1) {
-      text = text.substring(jsonStart, jsonEnd + 1);
-    }
+    // Validate JSON
+    JSON.parse(text);
 
     return res.status(200).json({
       content: [{ type: "text", text }],
     });
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+    return res.status(200).json({
+      content: [{ type: "text", text: '{"hollywood":[],"bollywood":[]}' }],
+    });
   }
 }
